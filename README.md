@@ -1,2 +1,2 @@
-# notion-guest-be-gone-inator
-A simple script to mass purge guests from a Notion page
+# Notion GuestBeGoneInator
+A simple script to mass purge guest access from a Notion page
