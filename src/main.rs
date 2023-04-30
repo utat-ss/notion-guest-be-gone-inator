@@ -1,40 +1,30 @@
-use clap::{App, Arg};
-use csv;
+use clap::{arg, command};
 use notion::ids::PageId;
 use notion::NotionApi;
 use std::error::Error;
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let matches = App::new("My Notion Program")
-        .version("1.0")
-        .author("Your Name <your.email@example.com>")
-        .about("A program to remove guest access to a Notion page")
-        .arg(
-            Arg::with_name("API_KEY")
-                .help("API key for Notion API")
-                .required(true)
-                .index(1),
-        )
-        .arg(
-            Arg::with_name("PAGE_ID")
-                .help("ID of the Notion page")
-                .required(true)
-                .index(2),
-        )
-        .arg(
-            Arg::with_name("EMAIL_LIST")
-                .help("Path to the CSV file containing email list")
-                .required(true)
-                .index(3),
-        )
+    let matches = command!()
+        .arg(arg!([API_KEY] "API key for Notion API").required(true))
+        .arg(arg!([PAGE_ID] "ID of the Notion page").required(true))
+        .arg(arg!([EMAIL_LIST] "Path to the CSV file containing email list").required(true))
         .get_matches();
 
-    let api_key = matches.value_of("API_KEY").unwrap();
-    let page_id = matches.value_of("PAGE_ID").unwrap();
-    let email_list_path = Path::new(matches.value_of("EMAIL_LIST").unwrap());
+    let api_key = matches
+        .get_one::<String>("API_KEY")
+        .expect("API_KEY is required");
+    let page_id = matches
+        .get_one::<String>("PAGE_ID")
+        .expect("PAGE_ID is required");
 
-    let client = NotionApi::new(api_key);
+    // Create a separate variable for the email list
+    let email_list = matches
+        .get_one::<String>("EMAIL_LIST")
+        .expect("EMAIL_LIST is required");
+    let email_list_path = Path::new(&email_list);
+
+    let client = NotionApi::new(api_key.to_string());
 
     let reader = csv::Reader::from_path(email_list_path)?;
     for result in reader.into_records() {
