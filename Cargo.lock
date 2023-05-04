@@ -667,6 +667,7 @@ dependencies = [
  "clap",
  "csv",
  "notion",
+ "serde",
 ]
 
 [[package]]
