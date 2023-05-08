@@ -12,8 +12,10 @@ This page should be the root page of the workspace.
 
 To get or create an API key, visit https://www.notion.so/my-integrations while logged in as the workspace owner.
 
+1. Duplicate the `.env.example` file and rename the duplicate to `.env`, and replace the placeholder values
+
 
 Then run
 ```
-cargo run <API_KEY> <PAGE_ID> <EMAIL_LIST>
+cargo run <PAGE_ID> <EMAIL_LIST>
 ```

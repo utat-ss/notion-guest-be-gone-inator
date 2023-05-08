@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let email_list_path = Path::new(&email_list);
 
     dotenv().ok();
-    let api_key = env::var("API_KEY").expect("API_KEY not found in .env");
+    let api_key = env::var("NOTION_KEY").expect("API_KEY not found in .env");
 
     let client = NotionApi::new(api_key.to_string())?;
 
