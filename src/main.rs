@@ -5,6 +5,7 @@ use serde::Deserialize;
 use std::error::Error;
 use std::path::Path;
 use std::str::FromStr;
+use futures::executor::block_on;
 
 #[derive(Debug, Deserialize)]
 struct EmailRecord {
@@ -43,19 +44,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let record: EmailRecord = result?;
         let email = &record.email;
         println!("Email: {}", email);
-        revoke_guest_access(&client, &page_id, &email)
+        revoke_guest_access(&client, &page_id, &email);
     }
 
     Ok(())
 }
 
-async fn revoke_guest_access(client: &NotionApi, page_id: &PageId, user_id: &str) {
-    let page = client.get_page(page_id).await;
-    let mut properties = page.properties.clone();
-
-    if let Some(permissions) = properties.page_user_permissions_mut() {
-        permissions.retain(|permission| permission.user_id() != user_id);
-    }
-
-    client.update_page_properties(page_id, properties);
+fn revoke_guest_access(client: &NotionApi, page_id: &PageId, user_id: &str) {
+    let page = block_on(client.get_page(page_id));
 }
+
