@@ -10,6 +10,7 @@ description = "A script to mass remove guest access from a Notion page based on 
 [dependencies]
 clap = { version = "4.2.5", features = ["cargo"] }
 csv = "1.2.1"
+dotenv = "0.15.0"
 futures = "0.3.28"
 notion = "0.5.1"
 serde = "1.0.160"
